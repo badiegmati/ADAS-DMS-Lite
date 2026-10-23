@@ -34,6 +34,7 @@ app:
   cookie:
     name: token
     secure: ${COOKIE_SECURE:false}
+    same-site: ${COOKIE_SAME_SITE:Lax}      # ← nouvelle ligne
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
   admin:
