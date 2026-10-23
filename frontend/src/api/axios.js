@@ -4,7 +4,7 @@ import axios from 'axios'
 // Spring Boot (jamais à Supabase directement). Le cookie JWT httpOnly est
 // envoyé automatiquement grâce à `withCredentials`.
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 })
