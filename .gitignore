@@ -1,0 +1,31 @@
+# Secrets
+.env
+*.env.local
+
+# Python (dms-client)
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.pt
+
+# Java / Maven (backend)
+target/
+*.class
+*.log
+
+# Node (frontend)
+node_modules/
+dist/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Divers
+.mvn/wrapper/maven-wrapper.jar
+*.egg-info/

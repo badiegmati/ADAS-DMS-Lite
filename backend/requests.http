@@ -1,0 +1,107 @@
+### Fichier de requêtes (extension « REST Client » de VS Code ou client HTTP d'IntelliJ).
+### Le cookie JWT est conservé automatiquement entre les requêtes : lance d'abord une connexion.
+@base = http://localhost:8080/api
+
+### ───────────── Public ─────────────
+GET {{base}}/health
+
+### ───────────── Connexions ─────────────
+### Admin (identifiant admin / mot de passe ADMIN_DEFAULT_PASSWORD)
+POST {{base}}/auth/admin/login
+Content-Type: application/json
+
+{ "identifiant": "admin", "motDePasse": "Admin@12345" }
+
+###
+POST {{base}}/auth/gestionnaire/login
+Content-Type: application/json
+
+{ "identifiant": "gestionnaire@test.tn", "motDePasse": "Test1234!" }
+
+###
+POST {{base}}/auth/conducteur/login
+Content-Type: application/json
+
+{ "identifiant": "C10", "motDePasse": "Test1234!" }
+
+###
+GET {{base}}/auth/me
+
+###
+POST {{base}}/auth/logout
+
+### ───────────── Admin (connecté en admin) ─────────────
+GET {{base}}/admin/gestionnaires
+
+###
+POST {{base}}/admin/gestionnaires
+Content-Type: application/json
+
+{ "entreprise": "Beta Logistique", "email": "beta@test.tn", "motDePasse": "Motdepasse1" }
+
+###
+GET {{base}}/admin/stats
+
+### ───────────── Gestionnaire (connecté en gestionnaire) ─────────────
+GET {{base}}/gestionnaire/dashboard
+
+###
+GET {{base}}/gestionnaire/conducteurs
+
+###
+POST {{base}}/gestionnaire/conducteurs
+Content-Type: application/json
+
+{ "codeConducteur": "C11", "nom": "Trabelsi", "prenom": "Sami", "email": "sami@test.tn",
+  "telephone": "22111222", "motDePasse": "Motdepasse1" }
+
+###
+GET {{base}}/gestionnaire/vehicules
+
+###
+POST {{base}}/gestionnaire/vehicules
+Content-Type: application/json
+
+{ "matricule": "234 TUN 8910", "marque": "Peugeot", "modele": "208", "statut": "ACTIF" }
+
+### Remplacer l'UUID par celui d'un conducteur de ta flotte (réponse de /gestionnaire/conducteurs)
+GET {{base}}/gestionnaire/conducteurs/00000000-0000-0000-0000-000000000000/detail?plage=24h&page=0
+
+### ───────────── Conducteur (connecté en conducteur) ─────────────
+GET {{base}}/conducteur/me/dashboard
+
+###
+GET {{base}}/conducteur/me/alertes?categorie=FATIGUE&page=0
+
+###
+GET {{base}}/conducteur/me/carte
+
+###
+GET {{base}}/conducteur/me/score/historique?plage=6h
+
+###
+GET {{base}}/conducteur/me/conseils
+
+###
+POST {{base}}/conducteur/me/conseils/generer
+
+###
+PUT {{base}}/conducteur/me/conseils/lus
+
+###
+PUT {{base}}/conducteur/me/profil
+Content-Type: application/json
+
+{ "telephone": "20999888" }
+
+### ───────────── Messagerie (gestionnaire ou conducteur) ─────────────
+GET {{base}}/messages/00000000-0000-0000-0000-000000000000
+
+###
+POST {{base}}/messages
+Content-Type: application/json
+
+{ "conducteurId": "00000000-0000-0000-0000-000000000000", "contenu": "Bonjour, pensez à faire une pause." }
+
+###
+PUT {{base}}/messages/00000000-0000-0000-0000-000000000000/lus

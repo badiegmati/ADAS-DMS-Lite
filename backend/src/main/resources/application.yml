@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: adas-dms-lite
+  # Charge backend/.env (KEY=VALUE) comme source de configuration
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        # Obligatoire avec le pooler Supabase en mode transaction (port 6543)
+        prepareThreshold: 0
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Le schéma est géré par supabase/schema.sql. En cas d'erreur « wrong column type » au démarrage :
+      # mettre JPA_DDL_AUTO=none dans .env
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-hours: 24
+  cookie:
+    name: token
+    secure: ${COOKIE_SECURE:false}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+  admin:
+    identifiant: ${ADMIN_IDENTIFIANT:admin}
+    default-password: ${ADMIN_DEFAULT_PASSWORD}
+  scheduler:
+    enabled: ${SCHEDULER_ENABLED:true}
+
+gemini:
+  api-key: ${GEMINI_API_KEY:}
+  model: ${GEMINI_MODEL:gemini-2.5-flash}
+  base-url: https://generativelanguage.googleapis.com/v1beta
+  timeout-ms: 10000
+
+logging:
+  level:
+    tn.adasdms.lite: INFO

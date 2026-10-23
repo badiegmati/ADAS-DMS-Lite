@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-slate-100 antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Scrollbar personnalisée ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Glassmorphism réutilisable ──────────────────────────── */
+.glass-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl;
+}
+.glass-panel {
+  @apply border border-white/10 bg-bg-card/80 backdrop-blur-xl;
+}
+
+/* ── Boutons / champs réutilisables ──────────────────────── */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white
+    bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-lg shadow-violet-500/20
+    transition-all duration-200 hover:shadow-violet-500/40 hover:-translate-y-0.5
+    active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none;
+}
+
+.input-field {
+  @apply w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-100
+    placeholder:text-slate-500 outline-none transition-colors
+    focus:border-violet-400/60 focus:bg-white/10;
+}
+
+/* ── Keyframes partagés (en plus de ceux de tailwind.config.js) ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-neon {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.animate-fade-in { animation: fade-in 0.4s ease-out both; }
+.animate-slide-up { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-pulse-neon { animation: pulse-neon 2s infinite; }
+
+@keyframes adas-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(248, 113, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+}
+.adas-marker-pulse {
+  animation: adas-pulse 1.6s infinite;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+}
+
+.adas-tuiles-sombres {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.6);
+}
+
+/* Les popups restent lisibles (texte sombre sur fond clair, non affectés
+   par le filtre ci-dessus) */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+}
