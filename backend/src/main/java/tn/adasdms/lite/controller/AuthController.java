@@ -42,21 +42,24 @@ public class AuthController {
     private final ConducteurRepository conducteurs;
     private final PasswordEncoder encoder;
     private final JwtUtils jwt;
-    private final String cookieName;
-    private final boolean cookieSecure;
+private final String cookieName;
+private final boolean cookieSecure;
+private final String cookieSameSite;   // ← nouveau champ
 
-    public AuthController(AdminRepository admins, GestionnaireRepository gestionnaires,
-                          ConducteurRepository conducteurs, PasswordEncoder encoder, JwtUtils jwt,
-                          @Value("${app.cookie.name:token}") String cookieName,
-                          @Value("${app.cookie.secure:false}") boolean cookieSecure) {
-        this.admins = admins;
-        this.gestionnaires = gestionnaires;
-        this.conducteurs = conducteurs;
-        this.encoder = encoder;
-        this.jwt = jwt;
-        this.cookieName = cookieName;
-        this.cookieSecure = cookieSecure;
-    }
+public AuthController(AdminRepository admins, GestionnaireRepository gestionnaires,
+                      ConducteurRepository conducteurs, PasswordEncoder encoder, JwtUtils jwt,
+                      @Value("${app.cookie.name:token}") String cookieName,
+                      @Value("${app.cookie.secure:false}") boolean cookieSecure,
+                      @Value("${app.cookie.same-site:Lax}") String cookieSameSite) {  // ← nouveau paramètre
+    this.admins = admins;
+    this.gestionnaires = gestionnaires;
+    this.conducteurs = conducteurs;
+    this.encoder = encoder;
+    this.jwt = jwt;
+    this.cookieName = cookieName;
+    this.cookieSecure = cookieSecure;
+    this.cookieSameSite = cookieSameSite;  // ← nouvelle affectation
+}
 
     @GetMapping("/health")
     public Map<String, String> health() {
@@ -113,7 +116,7 @@ public class AuthController {
         return ResponseCookie.from(cookieName, valeur)
                 .httpOnly(true)
                 .secure(cookieSecure)
-                .sameSite("Lax")
+                .sameSite(cookieSameSite)
                 .path("/")
                 .maxAge(duree)
                 .build();
